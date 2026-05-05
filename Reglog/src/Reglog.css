@@ -5,6 +5,7 @@
     margin-top: 100px;
     background: linear-gradient(#2A00B7, #42006C);
     padding-bottom: 30px;
+    width : 600px;
 }
 .header{
     display: flex;
