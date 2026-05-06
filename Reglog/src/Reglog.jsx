@@ -6,59 +6,107 @@ import email_icon from "./assets/mail.jpg";
 import password_icon from "./assets/pass.jpg";
 
 const Reglog = () => {
-
   const [action, setAction] = useState("Login");
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // 🔥 Handle submit
+  const [message, setMessage] = useState("");
+
+  // RESET ALL INPUTS
+  const resetFields = () => {
+    setUsername("");
+    setEmail("");
+    setPassword("");
+  };
+
+  // Handle submit
   const handleSubmit = async () => {
+    // VALIDATION
+    if (!email || !password || (action === "Sign Up" && !username)) {
+      setMessage("Please fill all fields");
+      return;
+    }
+
     try {
       if (action === "Sign Up") {
-        const response = await axios.post("http://localhost/api/register.php", {
-          name: username,
-          email: email,
-          password: password
-        });
+        const response = await axios.post(
+          "http://localhost/bcs/Reglog/Reglog/register.php",
+          {
+            name: username,
+            email: email,
+            password: password,
+          }
+        );
 
-        console.log(response.data);
-        alert("Registered successfully!");
-      } 
-      
-      else {
-        const response = await axios.post("http://localhost/api/login.php", {
-          email: email,
-          password: password
-        });
+        if (response.data.status === "success") {
+          setMessage("Registered successfully! Now login.");
+          resetFields();
+          setAction("Login");
+        } else {
+          setMessage(response.data.message || "Registration failed");
+        }
+      } else {
+        const response = await axios.post(
+          "http://localhost/bcs/Reglog/Reglog/login.php",
+          {
+            email: email,
+            password: password,
+          }
+        );
 
-        console.log(response.data);
-        alert("Login successful!");
+        if (response.data.status === "success") {
+          setMessage("Login successful!");
+          resetFields();
+
+          // OPTIONAL: store user
+          localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.user)
+          );
+        } else {
+          setMessage("Invalid credentials. Please sign up first.");
+          setAction("Sign Up");
+          resetFields();
+        }
       }
-
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong!");
+      console.error("ERROR:", error);
+      setMessage("Server error. Check backend.");
     }
+  };
+
+  // SWITCH TO SIGN UP
+  const switchToSignUp = () => {
+    setAction("Sign Up");
+    setMessage("");
+    resetFields();
+  };
+
+  // SWITCH TO LOGIN
+  const switchToLogin = () => {
+    setAction("Login");
+    setMessage("");
+    resetFields();
   };
 
   return (
     <div className="container">
-
       <div className="header">
         <div className="text">{action}</div>
         <div className="underline"></div>
       </div>
 
-      <div className="inputs">
+      {message && <p className="message">{message}</p>}
 
+      <div className="inputs">
         {action !== "Login" && (
           <div className="input">
             <img src={user_icon} alt="" />
-            <input 
-              type='text' 
-              placeholder='Username'
+            <input
+              type="text"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -67,9 +115,9 @@ const Reglog = () => {
 
         <div className="input">
           <img src={email_icon} alt="" />
-          <input 
-            type='email' 
-            placeholder='email'
+          <input
+            type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -77,14 +125,13 @@ const Reglog = () => {
 
         <div className="input">
           <img src={password_icon} alt="" />
-          <input 
-            type='password' 
-            placeholder='password'
+          <input
+            type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
       </div>
 
       {action !== "Sign Up" && (
@@ -94,28 +141,24 @@ const Reglog = () => {
       )}
 
       <div className="submit-container">
-
-        <div 
-          className={action === "Login" ? "submit gray" : "submit"} 
-          onClick={() => setAction("Sign Up")}
+        <div
+          className={action === "Login" ? "submit gray" : "submit"}
+          onClick={switchToSignUp}
         >
           Sign Up
         </div>
 
-        <div 
-          className={action === "Sign Up" ? "submit gray" : "submit"} 
-          onClick={() => setAction("Login")}
+        <div
+          className={action === "Sign Up" ? "submit gray" : "submit"}
+          onClick={switchToLogin}
         >
           Login
         </div>
-
       </div>
 
-      {/* 🔥 Submit button */}
-      <div className="submit-btn" onClick={handleSubmit}>
+      <button className="submit-btn" onClick={handleSubmit}>
         Submit
-      </div>
-
+      </button>
     </div>
   );
 };
