@@ -100,7 +100,7 @@
     text-align: center;
 
 }
-.dashboard-title {
+.Dashboard-title {
     font-size: 40px;
     font-weight: bold;
     color: #3c009d;
@@ -109,9 +109,9 @@
 .Welcome-dashboard {
     font-size: 28px;
     margin-bottom: 15px;
-    color: #333;
+    color: black;
 }
-.dashboard-email {
+.Email {
     font-size: 18px;
     color: #666;
     margin-bottom: 30px;

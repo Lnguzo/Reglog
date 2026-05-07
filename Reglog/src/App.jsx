@@ -2,30 +2,32 @@ import React, { useState } from "react";
 import Reglog from "./Reglog";
 import Dashboard from "./Dashboard";
 
+function App() {
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
 
-function app() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getitem("user")));
-
-  //LOGIN
+  // LOGIN
   const handleLogin = (userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
-  }
-  //LOGOUT
-  const hanleLogout = () =>{
+  };
+
+  // LOGOUT
+  const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
   };
 
   return (
     <div>
-      user ? (
-        <Dashboard user={user} onlogout={handleLogout}/>
+      {user ? (
+        <Dashboard user={user} onLogout={handleLogout} />
       ) : (
-        <Reglog onLogin ={handleLogin} />
-      )
-        
+        <Reglog onLogin={handleLogin} />
+      )}
     </div>
   );
-}   
+}
 
-export default app;
+export default App;
