@@ -1,5 +1,5 @@
 import React  from "react";
-import "./Reglog .css";
+import "./Reglog.css";
 
 
 const Dashboard = ({user,onlogout}) => {

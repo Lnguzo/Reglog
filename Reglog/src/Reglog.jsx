@@ -5,7 +5,7 @@ import user_icon from "./assets/person.jpg";
 import email_icon from "./assets/mail.jpg";
 import password_icon from "./assets/pass.jpg";
 
-const Reglog = () => {
+const Reglog = ({ onLogin }) => {
   const [action, setAction] = useState("Login");
 
   const [username, setUsername] = useState("");
@@ -65,6 +65,9 @@ const Reglog = () => {
             "user",
             JSON.stringify(response.data.user)
           );
+          onLogin(response.data.user);
+
+          
         } else {
           setMessage("Invalid credentials. Please sign up first.");
           setAction("Sign Up");
