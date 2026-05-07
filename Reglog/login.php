@@ -1,15 +1,14 @@
 <?php
 
-// Show errors (debugging only)
+//Show errors
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// CORS headers
+//CORS headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 
-// db connection
 include 'db.php';
 
 //Get JSON input

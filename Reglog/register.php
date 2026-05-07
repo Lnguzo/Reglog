@@ -9,7 +9,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 
-//Include DB
+
 include 'db.php';
 
 //Get JSON data
@@ -25,7 +25,7 @@ if (!$data) {
 $name = $data->name;
 $email = $data->email;
 
-//Hash password correctly
+//password hashing
 $password = password_hash($data->password, PASSWORD_DEFAULT);
 
 //SQL query

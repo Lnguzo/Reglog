@@ -60,7 +60,7 @@ const Reglog = () => {
           setMessage("Login successful!");
           resetFields();
 
-          // OPTIONAL: store user
+          //store user
           localStorage.setItem(
             "user",
             JSON.stringify(response.data.user)
@@ -143,22 +143,32 @@ const Reglog = () => {
       <div className="submit-container">
         <div
           className={action === "Login" ? "submit gray" : "submit"}
-          onClick={switchToSignUp}
+          onClick={ () => {
+            if(action == "Sign Up") {
+              handleSubmit();
+            } else{
+              setAction("Sign Up");
+            }
+          }}
         >
           Sign Up
         </div>
 
         <div
           className={action === "Sign Up" ? "submit gray" : "submit"}
-          onClick={switchToLogin}
+          onClick={ () => {
+            if(action == "Login") {
+              handleSubmit();
+            } else{
+              setAction("Login");
+            }
+          }}
         >
           Login
         </div>
       </div>
 
-      <button className="submit-btn" onClick={handleSubmit}>
-        Submit
-      </button>
+     
     </div>
   );
 };
